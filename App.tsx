@@ -4,6 +4,8 @@ import { AppProvider, UserProvider } from '@realm/react';
 import { Roboto_400Regular, Roboto_700Bold, useFonts } from '@expo-google-fonts/roboto';
 import { ThemeProvider } from 'styled-components/native';
 
+import { Routes } from './src/routes';
+
 import { StatusBar } from 'react-native';
 import { Loading } from './src/components/Loading';
 import { SignIn } from './src/screens/SignIn';
@@ -11,7 +13,6 @@ import { SignIn } from './src/screens/SignIn';
 import theme from './src/theme';
 
 import { REALM_APP_ID } from '@env';
-import { Home } from './src/screens/Home';
 
 export default function App() {
 
@@ -35,7 +36,7 @@ export default function App() {
           translucent 
         />
         <UserProvider fallback={SignIn}>
-          <Home />
+          <Routes />
         </UserProvider>
       </ThemeProvider>
     </AppProvider>
