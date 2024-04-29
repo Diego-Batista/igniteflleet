@@ -1,3 +1,4 @@
+import 'react-native-get-random-values';
 
 import { AppProvider, UserProvider } from '@realm/react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
