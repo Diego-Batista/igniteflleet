@@ -1,19 +1,26 @@
-import { useRef } from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView, TextInput } from 'react-native';
+import { useRef, useState } from 'react';
+import { Alert, KeyboardAvoidingView, Platform, ScrollView, TextInput } from 'react-native';
 import { Button } from '../../components/Button';
 import { Header } from '../../components/Header';
 import { LicensePlateInput } from '../../components/LicensePlateInput';
 import { TextAreaInput } from '../../components/TextAreaInput';
+import { licensePlateValidate } from '../../utils/licensePlateValidate';
 import { Container, Content } from './styles';
 
 const keyboardAvoidingViewBehavior = Platform.OS === 'android' ? 'height' : 'position';
 
 export function Departure() {
+  const [description, setDescription] = useState('');
+  const [licensePlate, setLicensePlate] = useState('');
 
   const descriptionRef = useRef<TextInput>(null);
+  const licensePlateRef = useRef<TextInput>(null);
 
   function handleDepartureRegister() {
-    console.log('OK!');
+    if(!licensePlateValidate(licensePlate)) {
+      licensePlateRef.current?.focus();
+      return Alert.alert('Placa inválida', 'A placa é inválida. Por favor, informa a placa correta.')
+    }
   }
 
   return (
@@ -24,12 +31,14 @@ export function Departure() {
         <ScrollView>
           <Content>
             <LicensePlateInput
+              ref={licensePlateRef}
               label='Placa do veículo'
               placeholder="BRA1234"
               onSubmitEditing={() => {
                 descriptionRef.current?.focus()
               }}
               returnKeyType='next'
+              onChangeText={setLicensePlate}
             />
 
             <TextAreaInput
@@ -39,6 +48,7 @@ export function Departure() {
               onSubmitEditing={handleDepartureRegister}
               returnKeyType='send'
               blurOnSubmit
+              onChangeText={setDescription}
             />
 
             <Button 

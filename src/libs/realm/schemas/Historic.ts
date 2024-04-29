@@ -34,7 +34,7 @@ export class Historic extends Realm.Object<Historic> {
       description: 'string',
       status: 'string',
       created_at: 'date',
-      updated_at: 'date'
+      updated_at: 'date',
     }
   }
 }
