@@ -1,13 +1,16 @@
 import { useNavigation } from '@react-navigation/native';
+import { Alert } from 'react-native';
 import { CarStatus } from '../../components/CarStatus';
 import { HomeHeader } from '../../components/HomeHeader';
 import { Container, Content } from './styles';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useQuery } from '../../libs/realm';
 import { Historic } from '../../libs/realm/schemas/Historic';
 
 export function Home() {
+  const [vehicleInUse, setVehicleInUse] = useState<Historic | null>(null);
+
   const { navigate } = useNavigation();
 
   const historic = useQuery(Historic)
@@ -17,7 +20,13 @@ export function Home() {
   }
 
   function fetchVehicle() {
-    console.log(historic);
+    try {
+      const vehicle = historic.filtered("status='departure'")[0];
+      setVehicleInUse(vehicle);
+    } catch (error) {
+      Alert.alert('Veículo em uso', 'Não foi possível carregar o veículo em uso.');
+      console.log(error);
+    }
   }
 
   useEffect(() => {
@@ -29,7 +38,10 @@ export function Home() {
       <HomeHeader />
 
       <Content>
-        <CarStatus licensePlate="XXX-1234" onPress={handleRegisterMoviment} />
+        <CarStatus 
+          licensePlate={vehicleInUse?.license_plate} 
+          onPress={handleRegisterMoviment} 
+        />
       </Content>
     </Container>
   );
