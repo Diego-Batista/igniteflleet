@@ -7,6 +7,10 @@ import { Button } from '../../components/Button';
 import { ButtonIcon } from '../../components/ButtonIcon';
 import { Header } from '../../components/Header';
 
+import { BSON } from 'realm';
+import { useObject } from '../../libs/realm';
+import { Historic } from '../../libs/realm/schemas/Historic';
+
 type RouteParamProps = {
   id: string;
 }
@@ -17,8 +21,7 @@ export function Arrival() {
 
   const { id } = route.params as RouteParamProps;
 
-
-  console.log(id);
+  const historic = useObject(Historic, new BSON.UUID(id) as unknown as string);
 
   return (
     <Container>
@@ -29,7 +32,7 @@ export function Arrival() {
         </Label>
 
         <LicensePlate>
-          XXX0000
+          {historic?.license_plate}
         </LicensePlate>
 
         <Label>
@@ -37,7 +40,7 @@ export function Arrival() {
         </Label>
 
         <Description>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa voluptate atque necessitatibus voluptatibus eveniet rerum maiores neque laborum obcaecati eos debitis deleniti tempore veritatis, voluptates modi, optio ullam quasi dolor!
+          {historic?.description}
         </Description>
 
         <Footer>
