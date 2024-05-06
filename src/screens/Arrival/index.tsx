@@ -88,8 +88,9 @@ export function Arrival() {
         <Description>
           {historic?.description}
         </Description>
+      </Content>
 
-        {
+      {
           historic?.status === 'departure' &&
           <Footer>
             <ButtonIcon 
@@ -103,7 +104,6 @@ export function Arrival() {
             />
           </Footer>
         }
-      </Content>
     </Container>
   );
 }
