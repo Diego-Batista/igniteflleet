@@ -2,6 +2,7 @@ import 'react-native-get-random-values';
 
 import { AppProvider, UserProvider } from '@realm/react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import './src/libs/dayjs';
 
 import { Roboto_400Regular, Roboto_700Bold, useFonts } from '@expo-google-fonts/roboto';
 import { ThemeProvider } from 'styled-components/native';

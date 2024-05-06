@@ -15,6 +15,7 @@
     "@react-navigation/native-stack": "^6.9.26",
     "@react-navigation/stack": "^6.3.29",
     "@realm/react": "^0.6.2",
+    "dayjs": "^1.11.11",
     "expo": "~50.0.14",
     "expo-dev-client": "^3.3.11",
     "expo-font": "~11.10.3",
