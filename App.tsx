@@ -7,7 +7,7 @@ import './src/libs/dayjs';
 import { Roboto_400Regular, Roboto_700Bold, useFonts } from '@expo-google-fonts/roboto';
 import { ThemeProvider } from 'styled-components/native';
 
-import { RealmProvider } from './src/libs/realm';
+import { RealmProvider, syncConfig } from './src/libs/realm';
 import { Routes } from './src/routes';
 
 import { StatusBar } from 'react-native';
@@ -41,7 +41,7 @@ export default function App() {
             translucent 
           />
           <UserProvider fallback={SignIn}>
-            <RealmProvider>
+            <RealmProvider sync={syncConfig} fallback={Loading}>
               <Routes />
             </RealmProvider>
           </UserProvider>
