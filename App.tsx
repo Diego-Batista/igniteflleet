@@ -1,6 +1,7 @@
 import 'react-native-get-random-values';
 
 import { AppProvider, UserProvider } from '@realm/react';
+import { WifiSlash } from 'phosphor-react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import './src/libs/dayjs';
 
@@ -12,6 +13,7 @@ import { Routes } from './src/routes';
 
 import { StatusBar } from 'react-native';
 import { Loading } from './src/components/Loading';
+import { TopMessage } from './src/components/TopMessage';
 import { SignIn } from './src/screens/SignIn';
 
 import theme from './src/theme';
@@ -35,6 +37,11 @@ export default function App() {
     <AppProvider id={REALM_APP_ID}>
       <ThemeProvider theme={theme}>
         <SafeAreaProvider style={{ backgroundColor: theme.COLORS.GRAY_800 }}>
+          <TopMessage 
+            title='Você está off-line'
+            icon={WifiSlash}
+          />
+          
           <StatusBar 
             barStyle="light-content" 
             backgroundColor="transparent" 
