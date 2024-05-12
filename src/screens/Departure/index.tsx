@@ -18,6 +18,7 @@ import { Container, Content, Message } from './styles';
 import { useNavigation } from '@react-navigation/native';
 import { useUser } from '@realm/react';
 
+import { Loading } from '../../components/Loading';
 import { useRealm } from '../../libs/realm';
 import { Historic } from '../../libs/realm/schemas/Historic';
 
@@ -25,6 +26,7 @@ export function Departure() {
   const [description, setDescription] = useState('');
   const [licensePlate, setLicensePlate] = useState('');
   const [isRegistering, setIsResgistering] = useState(false);
+  const [isLoadingLocation, setIsLoadingLocation] = useState(true);
 
   const [locationForegroundPermission, requestLocationForegroundPermission] = useForegroundPermissions();
 
@@ -88,9 +90,14 @@ export function Departure() {
       .then(address => {
         console.log(address)
       })
+      .finally(() => setIsLoadingLocation(false))
     }).then(response => subscription = response);
 
-    return () => subscription.remove();
+    return () => {
+      if(subscription) {
+        subscription.remove()
+      }
+    };
   }, [locationForegroundPermission?.granted])
 
   if(!locationForegroundPermission?.granted) {
@@ -104,6 +111,10 @@ export function Departure() {
         </Message>
       </Container>
     )
+  }
+
+  if(isLoadingLocation) {
+    return <Loading />
   }
 
   return (
