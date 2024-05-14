@@ -1,5 +1,6 @@
 import {
   LocationAccuracy,
+  LocationObjectCoords,
   LocationSubscription,
   useForegroundPermissions,
   watchPositionAsync
@@ -11,6 +12,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { Button } from '../../components/Button';
 import { Header } from '../../components/Header';
 import { LicensePlateInput } from '../../components/LicensePlateInput';
+import { Map } from '../../components/Map';
 import { TextAreaInput } from '../../components/TextAreaInput';
 import { getAddressLocation } from '../../utils/getAddressLocation';
 import { licensePlateValidate } from '../../utils/licensePlateValidate';
@@ -30,6 +32,7 @@ export function Departure() {
   const [isRegistering, setIsResgistering] = useState(false);
   const [isLoadingLocation, setIsLoadingLocation] = useState(true);
   const [currentAddress, setCurrentAddress] = useState<string | null>(null)
+  const [currentCoords, setCurrentCoords] = useState<LocationObjectCoords | null>(null)
 
   const [locationForegroundPermission, requestLocationForegroundPermission] = useForegroundPermissions();
 
@@ -89,6 +92,8 @@ export function Departure() {
       accuracy: LocationAccuracy.High,
       timeInterval: 1000
     }, (location) => {
+      setCurrentCoords(location.coords)
+
       getAddressLocation(location.coords)
       .then(address => {
         if(address) {
@@ -128,6 +133,7 @@ export function Departure() {
 
       <KeyboardAwareScrollView extraHeight={100}>
         <ScrollView>
+          { currentCoords && <Map coordinates={[currentCoords]} /> }
           <Content>
             {
               currentAddress &&
