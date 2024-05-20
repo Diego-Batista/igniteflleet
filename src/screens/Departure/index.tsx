@@ -2,6 +2,7 @@ import {
   LocationAccuracy,
   LocationObjectCoords,
   LocationSubscription,
+  requestBackgroundPermissionsAsync,
   useForegroundPermissions,
   watchPositionAsync
 } from 'expo-location';
@@ -43,7 +44,7 @@ export function Departure() {
   const descriptionRef = useRef<TextInput>(null);
   const licensePlateRef = useRef<TextInput>(null);
 
-  function handleDepartureRegister() {
+  async function handleDepartureRegister() {
     try {
       if(!licensePlateValidate(licensePlate)) {
         licensePlateRef.current?.focus();
@@ -59,7 +60,14 @@ export function Departure() {
         return Alert.alert('Localização', 'Não foi possível obter a localização atual. Tente novamente.')
       }
 
-      setIsResgistering(false);
+      setIsResgistering(true);
+
+      const backgroundPermissions = await requestBackgroundPermissionsAsync()
+
+      if(!backgroundPermissions.granted) {
+        setIsResgistering(false)
+        return Alert.alert('Localização', 'É necessário permitir que o App tenha acesso localização em segundo plano. Acesse as configurações do dispositivo e habilite "Permitir o tempo todo."')
+      }
 
       realm.write(() => {
         realm.create('Historic', Historic.generate({
