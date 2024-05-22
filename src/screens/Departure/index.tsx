@@ -26,6 +26,7 @@ import { Loading } from '../../components/Loading';
 import { LocationInfo } from '../../components/LocationInfo';
 import { useRealm } from '../../libs/realm';
 import { Historic } from '../../libs/realm/schemas/Historic';
+import { startLocationTask } from '../../tasks/backgroundLocationTask';
 
 export function Departure() {
   const [description, setDescription] = useState('');
@@ -68,6 +69,8 @@ export function Departure() {
         setIsResgistering(false)
         return Alert.alert('Localização', 'É necessário permitir que o App tenha acesso localização em segundo plano. Acesse as configurações do dispositivo e habilite "Permitir o tempo todo."')
       }
+
+      await startLocationTask();
 
       realm.write(() => {
         realm.create('Historic', Historic.generate({
