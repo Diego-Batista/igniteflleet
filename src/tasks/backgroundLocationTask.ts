@@ -1,31 +1,34 @@
 import {
-    Accuracy,
-    hasStartedLocationUpdatesAsync,
-    startLocationUpdatesAsync,
-    stopLocationUpdatesAsync
+  Accuracy,
+  hasStartedLocationUpdatesAsync,
+  startLocationUpdatesAsync,
+  stopLocationUpdatesAsync
 } from 'expo-location';
 import * as TaskManager from 'expo-task-manager';
+import { saveStorageLocation } from '../libs/asyncStorage/locationStorage';
 
 export const BACKGROUND_TASK_NAME =  'location-tracking';
 
-TaskManager.defineTask(BACKGROUND_TASK_NAME, ({ data, error }: any) => {
+TaskManager.defineTask(BACKGROUND_TASK_NAME, async ({ data, error }: any) => {
   try {
     if(error) {
       throw error
     }
+    if(data) {
+      const { coords, timestamp } = data.locations[0];
 
-    const { coords, timestamp } = data.locations[0];
+      const currentLocation = {
+        latitude: coords.latitude,
+        longitude: coords.longitude,
+        timestamp
+      }
 
-    const currentLocation = {
-      latitude: coords.latitude,
-      longitude: coords.longitude,
-      timestamp
+      await saveStorageLocation(currentLocation)
     }
-
-    console.log(currentLocation)
 
   } catch (error) {
     console.log(error)
+    stopLocationTask();
   }
 })
 
@@ -56,5 +59,6 @@ export async function startLocationTask() {
   
     } catch (error) {
       console.log()
+      
     }
  }
