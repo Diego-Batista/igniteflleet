@@ -11,6 +11,8 @@ import { ButtonIcon } from '../../components/ButtonIcon';
 import { Header } from '../../components/Header';
 
 import { BSON } from 'realm';
+
+import { getStorageLocation } from '../../libs/asyncStorage/locationStorage';
 import { getLastAsyncTimestamp } from '../../libs/asyncStorage/syncStorage';
 import { useObject, useRealm } from '../../libs/realm';
 import { Historic } from '../../libs/realm/schemas/Historic';
@@ -74,12 +76,17 @@ export function Arrival() {
     }
   }
 
+  async function getLocationsInfo() {
+    const lastSync = await getLastAsyncTimestamp();
+    const updatedAt= historic!.updated_at.getTime(); 
+    setDataNotSynced(updatedAt > lastSync);
+
+    const locationsStorage = await getStorageLocation();
+  }
+
   useEffect(() => {
-
-    getLastAsyncTimestamp()
-      .then(lastSync => setDataNotSynced(historic!.updated_at.getTime() > lastSync));
-
-  },[])
+    getLocationsInfo()
+  },[historic])
 
   return (
     <Container>
