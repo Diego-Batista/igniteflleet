@@ -14,6 +14,7 @@ import { Map } from '../../components/Map';
 
 import { BSON } from 'realm';
 
+import { Locations } from '../../components/Locations';
 import { getStorageLocation } from '../../libs/asyncStorage/locationStorage';
 import { getLastAsyncTimestamp } from '../../libs/asyncStorage/syncStorage';
 import { useObject, useRealm } from '../../libs/realm';
@@ -115,6 +116,11 @@ export function Arrival() {
       )}
 
       <Content>
+        <Locations 
+          departure={{ label: 'Saída', description: 'Saída teste' }}
+          arrival={{ label: 'Chegada', description: 'Chegada teste' }}
+        />
+        
         <Label>
           Placa do veículo
         </Label>
