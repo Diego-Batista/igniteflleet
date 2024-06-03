@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { Alert } from 'react-native';
 import { LatLng } from 'react-native-maps';
+import { Loading } from '../../components/Loading';
 
 import { AsyncMessage, Container, Content, Description, Footer, Label, LicensePlate } from './styles';
 
@@ -33,6 +34,7 @@ export function Arrival() {
   const [coordinates, setCoordinates] = useState<LatLng[]>([]);
   const [departure, setDeparture] = useState<LocationInfoProps>({} as LocationInfoProps);
   const [arrival, setArrival] = useState<LocationInfoProps | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const route = useRoute();
 
@@ -129,11 +131,16 @@ export function Arrival() {
         description: dayjs(new Date(lastLocation.timestamp)).format('DD/MM/YYYY [às] HH:mm')
       })
     }
+    setIsLoading(false)
   }
 
   useEffect(() => {
     getLocationsInfo()
   },[historic])
+
+  if(isLoading) {
+    return <Loading />
+  }
 
   return (
     <Container>
