@@ -17,7 +17,7 @@ import { Map } from '../../components/Map';
 import { TextAreaInput } from '../../components/TextAreaInput';
 import { getAddressLocation } from '../../utils/getAddressLocation';
 import { licensePlateValidate } from '../../utils/licensePlateValidate';
-import { Container, Content, Message } from './styles';
+import { Container, Content, Message, MessageContent } from './styles';
 
 import { useNavigation } from '@react-navigation/native';
 import { useUser } from '@realm/react';
@@ -27,6 +27,7 @@ import { LocationInfo } from '../../components/LocationInfo';
 import { useRealm } from '../../libs/realm';
 import { Historic } from '../../libs/realm/schemas/Historic';
 import { startLocationTask } from '../../tasks/backgroundLocationTask';
+import { openSettings } from '../../utils/openSettings';
 
 export function Departure() {
   const [description, setDescription] = useState('');
@@ -134,11 +135,15 @@ export function Departure() {
     return (
       <Container>
         <Header title='Saída' />
-        <Message>
-          Você precisa permitir que o aplicativo tenha acesso a 
-          localização para acessar essa funcionalidade. Por favor, acesse as
-          configurações do seu dispositivo para conceder a permissão ao aplicativo.
-        </Message>
+        <MessageContent>
+          <Message>
+            Você precisa permitir que o aplicativo tenha acesso a 
+            localização para acessar essa funcionalidade. Por favor, acesse as
+            configurações do seu dispositivo para conceder a permissão ao aplicativo.
+          </Message>
+
+          <Button title='Abrir configurações' onPress={openSettings} />
+        </MessageContent>
       </Container>
     )
   }
